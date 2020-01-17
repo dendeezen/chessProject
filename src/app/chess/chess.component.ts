@@ -1,8 +1,9 @@
-import {AfterViewInit, Component, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {Chesspiece} from './chess-piece/pieces/chesspiece';
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Coordinate} from './coordinate';
 import {faChessKing} from '@fortawesome/free-solid-svg-icons';
+import {PieceType} from './chess-piece/pieces/type';
 
 /**
  * @title Basic Drag&Drop
@@ -13,8 +14,11 @@ import {faChessKing} from '@fortawesome/free-solid-svg-icons';
   templateUrl: './chess.component.html',
   styleUrls: ['./chess.component.css']
 })
-export class ChessComponent implements OnInit, AfterViewInit {
-
+export class ChessComponent implements OnInit {
+  // tslint:disable-next-line:max-line-length
+  koningZwart = new Chesspiece ('1d', 'koningZwart', true, PieceType.Koning);
+  koningWit = new Chesspiece ('8d', 'koningWit', false, PieceType.Koning);
+  pieces: Chesspiece[] = [this.koningZwart, this.koningWit];
   gameBegun = false;
   constructor() { }
   faChessKing = faChessKing;
@@ -25,41 +29,32 @@ export class ChessComponent implements OnInit, AfterViewInit {
   gridsize = 80;
   coordinates: string[] = [];
 
-
   ngOnInit() {
     this.fillCoordinates();
-    // this.setGamePieces();
-
   }
-
-
-  // tslint:disable-next-line:use-lifecycle-interface
-  ngAfterViewInit() {
-
-  }
-
-
 
   placeChesspieces() {
-    // document.getElementById('testpiece').
+
+    const koningZ = document.getElementById('koningZwart');
+    // @ts-ignore
+    document.getElementById(this.koningZwart.coordinate).appendChild(koningZ);
+    document.getElementById('1e').innerText = 'text';
   }
 
   fillCoordinates() {
-    for (const i of this.columns) {
-      for (const s of this.rows) {
+    for (let i of this.columns) {
+      for (let s of this.rows) {
         this.coordinates.push(i + s);
       }
     }
     console.log(this.coordinates);
-    console.log(document.getElementById('1a'));
   }
 
   drop(ev) {
     ev.preventDefault();
-    const data = ev.dataTransfer.getData('text');
+    let data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
     console.log(ev.target.id);
-    
   }
 
   allowDrop(ev) {
@@ -73,23 +68,9 @@ export class ChessComponent implements OnInit, AfterViewInit {
   beginGame() {
     this.gameBegun = true;
     this.generateCheckerBoard();
-    this.setGamePieces();
+    this.placeChesspieces();
   }
 
-  setGamePieces() {
-    // @ts-ignore
-    // document.getElementById('koningZwart').
-    const kingZwartDiv = document.getElementById('koningZwart');
-      // this.htmlToElement('<div id="koningZwart" draggable="true" (dragstart)="drag($event)"></div>');
-
-    const kingZwartCell = document.getElementById('1d');
-    // const kingZwartIcon = this.htmlToElement('<fa-icon class="zwart" [icon]="faChessKing" size="2x"></fa-icon>');
-
-    // kingZwartDiv.(kingZwartIcon);
-    console.log(kingZwartCell);
-    kingZwartCell.appendChild( kingZwartDiv);
-
-  }
 
   onCellClicked(coordinate: Coordinate): void {
     console.log(coordinate.coordinate);
@@ -104,13 +85,6 @@ export class ChessComponent implements OnInit, AfterViewInit {
         }
       }
     }
-  }
-
-  htmlToElement(html) {
-    const template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
-    template.innerHTML = html;
-    return template.content.firstChild;
   }
 
 }

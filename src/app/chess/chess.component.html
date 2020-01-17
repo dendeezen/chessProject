@@ -6,12 +6,10 @@
     <div class="grid-item" *ngFor="let coordinate of coordinates" id="{{coordinate}}" (drop)="drop($event)" (dragover)="allowDrop($event)"></div>
 </div>
 
-<div id="chessPieceBox">
-  <div id="koningZwart" draggable="true" (dragstart)="drag($event)">
-    <fa-icon class="zwart" [icon]="faChessKing" size="2x"></fa-icon>
-  </div>
-  <div id="koningWit" draggable="true" (dragstart)="drag($event)">
-    <fa-icon class="wit" [icon]="faChessKing" size="2x"></fa-icon>
+<div id="chessPieceBox" *ngFor="let piece of pieces">
+
+  <div id="{{piece.id}}" draggable="true" (dragstart)="drag($event)">
+    <fa-icon class="{{piece.getColor()}}" [icon]="faChessKing" size="2x"></fa-icon>
   </div>
 </div>
 
