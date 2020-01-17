@@ -1,0 +1,19 @@
+<p>chess works!</p>
+
+<button (click)="beginGame()" *ngIf="!gameBegun">Start chess game</button>
+
+<div id="grid" #myBounds class="grid-container" >
+    <div class="grid-item" *ngFor="let coordinate of coordinates" id="{{coordinate}}" (drop)="drop($event)" (dragover)="allowDrop($event)"></div>
+</div>
+
+<div id="chessPieceBox">
+  <div id="koningZwart" draggable="true" (dragstart)="drag($event)">
+    <fa-icon class="zwart" [icon]="faChessKing" size="2x"></fa-icon>
+  </div>
+  <div id="koningWit" draggable="true" (dragstart)="drag($event)">
+    <fa-icon class="wit" [icon]="faChessKing" size="2x"></fa-icon>
+  </div>
+</div>
+
+
+
