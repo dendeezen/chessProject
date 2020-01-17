@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, Output} from '@angular/core';
 import {Chesspiece} from './chess-piece/pieces/chesspiece';
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Coordinate} from './coordinate';
@@ -13,7 +13,7 @@ import {faChessKing} from '@fortawesome/free-solid-svg-icons';
   templateUrl: './chess.component.html',
   styleUrls: ['./chess.component.css']
 })
-export class ChessComponent implements OnInit {
+export class ChessComponent implements OnInit, AfterViewInit {
 
   gameBegun = false;
   constructor() { }
@@ -25,28 +25,41 @@ export class ChessComponent implements OnInit {
   gridsize = 80;
   coordinates: string[] = [];
 
+
   ngOnInit() {
     this.fillCoordinates();
+    // this.setGamePieces();
+
   }
+
+
+  // tslint:disable-next-line:use-lifecycle-interface
+  ngAfterViewInit() {
+
+  }
+
+
 
   placeChesspieces() {
     // document.getElementById('testpiece').
   }
 
   fillCoordinates() {
-    for (let i of this.columns) {
-      for (let s of this.rows) {
+    for (const i of this.columns) {
+      for (const s of this.rows) {
         this.coordinates.push(i + s);
       }
     }
     console.log(this.coordinates);
+    console.log(document.getElementById('1a'));
   }
 
   drop(ev) {
     ev.preventDefault();
-    let data = ev.dataTransfer.getData('text');
+    const data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
-
+    console.log(ev.target.id);
+    
   }
 
   allowDrop(ev) {
@@ -66,6 +79,16 @@ export class ChessComponent implements OnInit {
   setGamePieces() {
     // @ts-ignore
     // document.getElementById('koningZwart').
+    const kingZwartDiv = document.getElementById('koningZwart');
+      // this.htmlToElement('<div id="koningZwart" draggable="true" (dragstart)="drag($event)"></div>');
+
+    const kingZwartCell = document.getElementById('1d');
+    // const kingZwartIcon = this.htmlToElement('<fa-icon class="zwart" [icon]="faChessKing" size="2x"></fa-icon>');
+
+    // kingZwartDiv.(kingZwartIcon);
+    console.log(kingZwartCell);
+    kingZwartCell.appendChild( kingZwartDiv);
+
   }
 
   onCellClicked(coordinate: Coordinate): void {
@@ -81,6 +104,13 @@ export class ChessComponent implements OnInit {
         }
       }
     }
+  }
+
+  htmlToElement(html) {
+    const template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
   }
 
 }
