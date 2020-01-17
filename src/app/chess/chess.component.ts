@@ -3,6 +3,7 @@ import {Chesspiece} from './chess-piece/pieces/chesspiece';
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Coordinate} from './coordinate';
 import {faChessKing} from '@fortawesome/free-solid-svg-icons';
+import {PieceType} from './chess-piece/pieces/type';
 
 /**
  * @title Basic Drag&Drop
@@ -14,7 +15,10 @@ import {faChessKing} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./chess.component.css']
 })
 export class ChessComponent implements OnInit {
-
+  // tslint:disable-next-line:max-line-length
+  koningZwart = new Chesspiece ('1d', 'koningZwart', true, PieceType.Koning);
+  koningWit = new Chesspiece ('8d', 'koningWit', false, PieceType.Koning);
+  pieces: Chesspiece[] = [this.koningZwart, this.koningWit];
   gameBegun = false;
   constructor() { }
   faChessKing = faChessKing;
@@ -30,7 +34,11 @@ export class ChessComponent implements OnInit {
   }
 
   placeChesspieces() {
-    // document.getElementById('testpiece').
+
+    const koningZ = document.getElementById('koningZwart');
+    // @ts-ignore
+    document.getElementById(this.koningZwart.coordinate).appendChild(koningZ);
+    document.getElementById('1e').innerText = 'text';
   }
 
   fillCoordinates() {
@@ -46,7 +54,7 @@ export class ChessComponent implements OnInit {
     ev.preventDefault();
     let data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
-
+    console.log(ev.target.id);
   }
 
   allowDrop(ev) {
@@ -60,13 +68,9 @@ export class ChessComponent implements OnInit {
   beginGame() {
     this.gameBegun = true;
     this.generateCheckerBoard();
-    this.setGamePieces();
+    this.placeChesspieces();
   }
 
-  setGamePieces() {
-    // @ts-ignore
-    // document.getElementById('koningZwart').
-  }
 
   onCellClicked(coordinate: Coordinate): void {
     console.log(coordinate.coordinate);

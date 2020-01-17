@@ -60,14 +60,6 @@
   border: dotted #ccc 2px;
 }
 
-.zwartkader {
-  width: 80px;
-  height: 80px;
-  background: #333333;
-  position:absolute;
-  /*top:e.clientY + 'px';*/
-  /*left:e.clientX + 'px';*/
-}
 
 .zwart {
   color: #644c1b;
@@ -82,11 +74,3 @@
   stroke-width: 10;
 }
 
-#div1, #div2 {
-  float: left;
-  width: 100px;
-  height: 35px;
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid black;
-}

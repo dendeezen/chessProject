@@ -1,15 +1,23 @@
 import {PieceType} from './type';
 
 export class Chesspiece {
-  x: string;
-  y: string;
+  coordinate: string;
+  id: string;
   isBlack: boolean;
   type: PieceType;
 
-  constructor(x: string, y: string, isBlack: boolean, type: PieceType) {
-    this.x = x;
-    this.y = y;
+  constructor(coordinate: string, id: string, isBlack: boolean, type: PieceType) {
+    this.coordinate = coordinate;
+    this.id = id;
     this.isBlack = isBlack;
     this.type = type;
   }
+
+  getColor() {
+    if (this.isBlack) {
+      return 'zwart';
+    } else { return 'wit';
+    }
+  }
+
 }
