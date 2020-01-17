@@ -1,0 +1,2 @@
+<app-grid-component *ngFor="let coordinate of coordinates" [coordinate] = "coordinate"  id ="{{coordinate.coordinate}}" (drop)="onDropped.emit()" (dragover)="allowDrop.emit()" class="grid-item" >
+</app-grid-component>

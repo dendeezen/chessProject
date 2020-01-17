@@ -1,0 +1,29 @@
+<p>spotify-callback works!</p>
+
+<div *ngIf="error != null">
+  {{error}}
+  <p>Jammer dat je mij geen toestemming geeft om je gegevens te gebruiken :(</p>
+  <a routerLink="">Terug naar index</a>
+</div>
+
+<div *ngIf="error == null && !dataFetched">
+  <p>Access granted!</p>
+  {{code}}
+
+  <button (click)="show()">Doorgaan naar gegevens</button>
+</div>
+
+<div *ngIf="dataFetched">
+  <p>Naam:</p>
+  <p>{{userobject.display_name}}</p>
+  <p>Volgers:</p>
+  <p>{{userobject.followers.total}}</p>
+  <p>href:</p>
+  <p>{{userobject.href}}</p>
+  <p>ID:</p>
+  <p>{{userobject.id}}</p>
+  <img src="{{userobject.images[0].url}}">
+
+  <button (click)="logout()">Uitloggen</button>
+</div>
+

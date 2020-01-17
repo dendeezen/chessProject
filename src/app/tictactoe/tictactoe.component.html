@@ -1,0 +1,36 @@
+<p>tictactoe works!</p>
+
+<div *ngIf="selectedLevel == null">
+  <h3>Select mode</h3>
+  <select [(ngModel)]="selectedLevel" (change)="selected()">
+    <option *ngFor="let item of data" [ngValue]="item">{{item}}</option>
+  </select>
+</div>
+
+
+
+<div *ngIf="selectedLevel != null">
+  <h3>{{selectedLevel}}</h3>
+
+  <div id="grid" class="grid-container" >
+    <div class="grid-item" id="1" (click)="cell1Clicked()"></div>
+    <div class="grid-item" id="2" (click)="cell2Clicked()"></div>
+    <div class="grid-item" id="3" (click)="cell3Clicked()"></div>
+    <div class="grid-item" id="4" (click)="cell4Clicked()"></div>
+    <div class="grid-item" id="5" (click)="cell5Clicked()"></div>
+    <div class="grid-item" id="6" (click)="cell6Clicked()"></div>
+    <div class="grid-item" id="7" (click)="cell7Clicked()"></div>
+    <div class="grid-item" id="8" (click)="cell8Clicked()"></div>
+    <div class="grid-item" id="9" (click)="cell9Clicked()"></div>
+  </div>
+
+  <p>Current player: {{currentPlayer}}</p>
+<!--  <p>Current gameboard: {{gameBoard}}</p>-->
+  <p *ngIf="winnerDetermined">Player {{currentPlayer}} wins!</p>
+  <p *ngIf="draw">Draw!</p>
+  <button (click)="reset()">reset</button>
+</div>
+
+
+
+

@@ -1,0 +1,19 @@
+<h2>mycomponent works!</h2>
+
+<p>Zin in een portie developer humor?</p>
+
+
+<div *ngIf="jokeCalled">
+  <div *ngFor="let joke of joke$ | async">
+    <div  class="w3-card-4 w3-margin w3-padding-bottom" >
+      {{joke.setup}}
+      {{joke.punchline}}
+    </div>
+
+  </div>
+</div>
+
+
+<button (click)="loadJoke()">Klik hier voor humor</button>
+<button (click)="loadTenJokes()">Klik hier voor veel humor</button>
+<a routerLink="">Terug naar index</a>

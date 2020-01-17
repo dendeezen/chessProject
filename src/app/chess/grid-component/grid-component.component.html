@@ -1,0 +1,3 @@
+<div (mouseup)="onClicked.emit(coordinate)" (dragover)="showCoordinate()" (drop)="onDropped.emit()" (dragover)="allowDrop.emit()" class="grid">
+  <small>{{coordinate.coordinate}}</small>
+</div>
