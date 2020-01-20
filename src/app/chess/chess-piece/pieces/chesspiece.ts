@@ -21,6 +21,10 @@ export class Chesspiece {
     }
   }
 
+  getMovementOptions(): string[] {
+    return [];
+  }
+
   getImage() {
     switch (this.type) {
       case PieceType.Pion: {

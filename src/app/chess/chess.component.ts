@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Chesspiece} from './chess-piece/pieces/chesspiece';
 import {Coordinate} from './coordinate';
 import {PieceType} from './chess-piece/pieces/type';
+import {Pion} from './chess-piece/pieces/pion';
 
 /**
  * @title Basic Drag&Drop
@@ -32,23 +33,24 @@ export class ChessComponent implements OnInit {
   paard1Wit = new Chesspiece('8c', 'paard1Wit', false, PieceType.Paard);
   paard2Wit = new Chesspiece('8f', 'paard2Wit', false, PieceType.Paard);
 
-  pion1Zwart = new Chesspiece('2a', 'pion1Zwart' , true, PieceType.Pion);
-  pion2Zwart = new Chesspiece('2b', 'pion2Zwart' , true, PieceType.Pion);
-  pion3Zwart = new Chesspiece('2c', 'pion3Zwart' , true, PieceType.Pion);
-  pion4Zwart = new Chesspiece('2d', 'pion4Zwart' , true, PieceType.Pion);
-  pion5Zwart = new Chesspiece('2e', 'pion5Zwart' , true, PieceType.Pion);
-  pion6Zwart = new Chesspiece('2f', 'pion6Zwart' , true, PieceType.Pion);
-  pion7Zwart = new Chesspiece('2g', 'pion7Zwart' , true, PieceType.Pion);
-  pion8Zwart = new Chesspiece('2h', 'pion8Zwart' , true, PieceType.Pion);
+  pion1Zwart = new Pion('2a', 'pion1Zwart' , true, PieceType.Pion);
+  pion2Zwart = new Pion('2b', 'pion2Zwart' , true, PieceType.Pion);
+  pion3Zwart = new Pion('2c', 'pion3Zwart' , true, PieceType.Pion);
+  pion4Zwart = new Pion('2d', 'pion4Zwart' , true, PieceType.Pion);
+  pion5Zwart = new Pion('2e', 'pion5Zwart' , true, PieceType.Pion);
+  pion6Zwart = new Pion('2f', 'pion6Zwart' , true, PieceType.Pion);
+  pion7Zwart = new Pion('2g', 'pion7Zwart' , true, PieceType.Pion);
+  pion8Zwart = new Pion('2h', 'pion8Zwart' , true, PieceType.Pion);
 
-  pion1Wit = new Chesspiece('7a', 'pion1Wit' , false, PieceType.Pion);
-  pion2Wit = new Chesspiece('7b', 'pion2Wit' , false, PieceType.Pion);
-  pion3Wit = new Chesspiece('7c', 'pion3Wit' , false, PieceType.Pion);
-  pion4Wit = new Chesspiece('7d', 'pion4Wit' , false, PieceType.Pion);
-  pion5Wit = new Chesspiece('7e', 'pion5Wit' , false, PieceType.Pion);
-  pion6Wit = new Chesspiece('7f', 'pion6Wit' , false, PieceType.Pion);
-  pion7Wit = new Chesspiece('7g', 'pion7Wit' , false, PieceType.Pion);
-  pion8Wit = new Chesspiece('7h', 'pion8Wit' , false, PieceType.Pion);
+  pion1Wit = new Pion('7a', 'pion1Wit' , false, PieceType.Pion);
+  pion2Wit = new Pion('7b', 'pion2Wit' , false, PieceType.Pion);
+  pion3Wit = new Pion('7c', 'pion3Wit' , false, PieceType.Pion);
+  pion4Wit = new Pion('7d', 'pion4Wit' , false, PieceType.Pion);
+  pion5Wit = new Pion('7e', 'pion5Wit' , false, PieceType.Pion);
+  pion6Wit = new Pion('7f', 'pion6Wit' , false, PieceType.Pion);
+  pion7Wit = new Pion('7g', 'pion7Wit' , false, PieceType.Pion);
+  pion8Wit = new Pion('7h', 'pion8Wit' , false, PieceType.Pion);
+
 
   // tslint:disable-next-line:max-line-length
   pieces: Chesspiece[] = [this.koningZwart, this.koninginZwart, this.toren1Zwart, this.toren2Zwart, this.loper1Zwart, this.loper2Zwart, this.paard1Zwart, this.paard2Zwart, this.koningWit, this.koninginWit, this.toren1Wit, this.toren2Wit, this.loper1Wit, this.loper2Wit, this.paard1Wit, this.paard2Wit, this.pion1Wit, this.pion2Wit, this.pion3Wit, this.pion4Wit, this.pion5Wit, this.pion6Wit, this.pion7Wit, this.pion8Wit, this.pion1Zwart, this.pion2Zwart, this.pion3Zwart, this.pion4Zwart, this.pion5Zwart, this.pion6Zwart, this.pion7Zwart, this.pion8Zwart];
@@ -75,9 +77,6 @@ export class ChessComponent implements OnInit {
       document.getElementById(piece.coordinate).appendChild(temp);
     }
     }
-    // const koningZ = document.getElementById('koningZwart');
-    // // @ts-ignore
-    // document.getElementById(this.koningZwart.coordinate).appendChild(koningZ);
 
   fillCoordinates() {
     for (let i of this.columns) {
@@ -93,15 +92,15 @@ export class ChessComponent implements OnInit {
       if (piece.id === id) {
         switch (piece.type) {
           case PieceType.Pion: {
-            if (piece.isBlack) {
-              this.coordinatesToHighlight = [];
-            }
+            this.coordinatesToHighlight = piece.getMovementOptions();
+            console.log(this.coordinatesToHighlight);
             break;
+            }
+
           }
         }
       }
     }
-  }
 
   drop(ev) {
     ev.preventDefault();
@@ -153,7 +152,6 @@ export class ChessComponent implements OnInit {
         }
       }
     }
-
     return false;
   }
 
