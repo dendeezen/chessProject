@@ -1,7 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Chesspiece} from './pieces/chesspiece';
 import {faChessKing} from '@fortawesome/free-solid-svg-icons';
 import {PieceType} from './pieces/type';
+import {ChessPieceMoveEvent} from '../chessPieceMoveEvent';
 
 @Component({
   selector: 'app-chess-piece',
@@ -10,12 +11,16 @@ import {PieceType} from './pieces/type';
 })
 export class ChessPieceComponent implements OnInit {
 
-  faChessKing = faChessKing;
+  /*faChessKing = faChessKing;
   private chesspiece: Chesspiece = new Chesspiece('a', '1', true, PieceType.Koning);
   private chesspiece2: Chesspiece = new Chesspiece('b', '2', false, PieceType.Koning);
-  chesspieces = [this.chesspiece, this.chesspiece2];
+  chesspieces = [this.chesspiece, this.chesspiece2];*/
+  @Input() chesspiece: Chesspiece;
+  faChessKing = faChessKing;
 
-  @Output() drag = new EventEmitter();
+  // tslint:disable-next-line:no-output-on-prefix
+  // @ts-ignore
+  @Output() onDrag = new EventEmitter<ChessPieceMoveEvent>();
 
   constructor() { }
 

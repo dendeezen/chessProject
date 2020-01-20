@@ -4,6 +4,7 @@ import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-dr
 import {Coordinate} from './coordinate';
 import {faChessKing} from '@fortawesome/free-solid-svg-icons';
 import {PieceType} from './chess-piece/pieces/type';
+import {ChessPieceMoveEvent} from './chessPieceMoveEvent';
 
 /**
  * @title Basic Drag&Drop
@@ -18,7 +19,7 @@ export class ChessComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   koningZwart = new Chesspiece ('1d', 'koningZwart', true, PieceType.Koning);
   koningWit = new Chesspiece ('8d', 'koningWit', false, PieceType.Koning);
-  pieces: Chesspiece[] = [this.koningZwart, this.koningWit];
+  chesspieces: Chesspiece[] = [this.koningZwart, this.koningWit];
   gameBegun = false;
   constructor() { }
   faChessKing = faChessKing;
@@ -38,12 +39,11 @@ export class ChessComponent implements OnInit {
     const koningZ = document.getElementById('koningZwart');
     // @ts-ignore
     document.getElementById(this.koningZwart.coordinate).appendChild(koningZ);
-    document.getElementById('1e').innerText = 'text';
   }
 
   fillCoordinates() {
-    for (let i of this.columns) {
-      for (let s of this.rows) {
+    for (const i of this.columns) {
+      for (const s of this.rows) {
         this.coordinates.push(i + s);
       }
     }
@@ -51,18 +51,24 @@ export class ChessComponent implements OnInit {
   }
 
   drop(ev) {
+
     ev.preventDefault();
-    let data = ev.dataTransfer.getData('text');
-    ev.target.appendChild(document.getElementById(data));
+    // tslint:disable-next-line:one-variable-per-declaration
+    const data: string[] = ev.dataTransfer..getData('text');
+    console.log(data);
+    ev.target.appendChild(document.getElementById(data[0]));
     console.log(ev.target.id);
+
+
   }
 
   allowDrop(ev) {
     ev.preventDefault();
   }
 
-  drag(ev) {
-    ev.dataTransfer.setData('text', ev.target.id);
+  drag(ev: ChessPieceMoveEvent) {
+    ev.event.dataTransfer.setData('text', [ev.event.target.id, ev.chesspiece.coordinate]);
+    console.log(ev.chesspiece.coordinate);
   }
 
   beginGame() {
