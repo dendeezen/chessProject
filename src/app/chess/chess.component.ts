@@ -93,9 +93,7 @@ export class ChessComponent implements OnInit {
       if (piece.id === id) {
         switch (piece.type) {
           case PieceType.Pion: {
-            if (piece.isBlack) {
-              this.coordinatesToHighlight = [];
-            }
+            this.coordinatesToHighlight = piece.getMovementOptions();
             break;
           }
         }
