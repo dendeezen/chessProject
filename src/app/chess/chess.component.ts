@@ -100,7 +100,7 @@ export class ChessComponent implements OnInit {
       }
     }
   }
-
+//hi!
   drop(ev) {
     ev.preventDefault();
     let data = ev.dataTransfer.getData('text');
