@@ -1,4 +1,5 @@
 import {PieceType} from './type';
+import {faChessBishop, faChessKing, faChessPawn, faChessQueen, faChessRook, faChessKnight} from '@fortawesome/free-solid-svg-icons';
 
 export class Chesspiece {
   coordinate: string;
@@ -20,4 +21,31 @@ export class Chesspiece {
     }
   }
 
+  getImage() {
+    switch (this.type) {
+      case PieceType.Pion: {
+        return faChessPawn;
+        break;
+      }
+      case PieceType.Koning: {
+        return faChessKing;
+        break;
+      }
+      case PieceType.Koningin: {
+        return  faChessQueen;
+        break;
+      }
+      case PieceType.Loper: {
+        return faChessBishop;
+        break;
+      }
+      case PieceType.Toren: {
+        return faChessRook;
+        break;
+      }
+      case PieceType.Paard: {
+        return faChessKnight;
+      }
+    }
+  }
 }
