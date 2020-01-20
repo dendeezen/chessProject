@@ -4,6 +4,7 @@ import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-dr
 import {Coordinate} from './coordinate';
 import {faChessKing} from '@fortawesome/free-solid-svg-icons';
 import {PieceType} from './chess-piece/pieces/type';
+import {ChessPieceMoveEvent} from './chessPieceMoveEvent';
 
 /**
  * @title Basic Drag&Drop
@@ -15,6 +16,8 @@ import {PieceType} from './chess-piece/pieces/type';
   styleUrls: ['./chess.component.css']
 })
 export class ChessComponent implements OnInit {
+
+
   // tslint:disable-next-line:max-line-length
   koningZwart = new Chesspiece ('1d', 'koningZwart', true, PieceType.Koning);
   koninginZwart = new Chesspiece('1e', 'koninginZwart', true, PieceType.Koningin);
@@ -26,7 +29,6 @@ export class ChessComponent implements OnInit {
   paard2Zwart = new Chesspiece('1f', 'paard2Zwart', true, PieceType.Paard);
 
   koningWit = new Chesspiece ('8d', 'koningWit', false, PieceType.Koning);
-  chesspieces: Chesspiece[] = [this.koningZwart, this.koningWit];
   koninginWit = new Chesspiece('8e', 'koninginWit', false, PieceType.Koningin);
   toren1Wit = new Chesspiece('8a', 'toren1Wit', false, PieceType.Toren);
   toren2Wit = new Chesspiece('8h', 'toren2Wit', false, PieceType.Toren);
@@ -53,8 +55,9 @@ export class ChessComponent implements OnInit {
   pion7Wit = new Chesspiece('7g', 'pion7Wit' , false, PieceType.Pion);
   pion8Wit = new Chesspiece('7h', 'pion8Wit' , false, PieceType.Pion);
 
+
   // tslint:disable-next-line:max-line-length
-  pieces: Chesspiece[] = [this.koningZwart, this.koninginZwart, this.toren1Zwart, this.toren2Zwart, this.loper1Zwart, this.loper2Zwart, this.paard1Zwart, this.paard2Zwart, this.koningWit, this.koninginWit, this.toren1Wit, this.toren2Wit, this.loper1Wit, this.loper2Wit, this.paard1Wit, this.paard2Wit, this.pion1Wit, this.pion2Wit, this.pion3Wit, this.pion4Wit, this.pion5Wit, this.pion6Wit, this.pion7Wit, this.pion8Wit, this.pion1Zwart, this.pion2Zwart, this.pion3Zwart, this.pion4Zwart, this.pion5Zwart, this.pion6Zwart, this.pion7Zwart, this.pion8Zwart];
+  chesspieces: Chesspiece[] = [this.koningZwart, this.koninginZwart, this.toren1Zwart, this.toren2Zwart, this.loper1Zwart, this.loper2Zwart, this.paard1Zwart, this.paard2Zwart, this.koningWit, this.koninginWit, this.toren1Wit, this.toren2Wit, this.loper1Wit, this.loper2Wit, this.paard1Wit, this.paard2Wit, this.pion1Wit, this.pion2Wit, this.pion3Wit, this.pion4Wit, this.pion5Wit, this.pion6Wit, this.pion7Wit, this.pion8Wit, this.pion1Zwart, this.pion2Zwart, this.pion3Zwart, this.pion4Zwart, this.pion5Zwart, this.pion6Zwart, this.pion7Zwart, this.pion8Zwart];
   coordinatesToHighlight: string[];
   gameBegun = false;
   classname: string;
@@ -74,7 +77,7 @@ export class ChessComponent implements OnInit {
   }
 
   placeChesspieces() {
-    for (const piece of this.pieces) {
+    for (const piece of this.chesspieces) {
       const temp = document.getElementById(piece.id);
       document.getElementById(piece.coordinate).appendChild(temp);
     }
@@ -84,8 +87,8 @@ export class ChessComponent implements OnInit {
     // document.getElementById(this.koningZwart.coordinate).appendChild(koningZ);
 
   fillCoordinates() {
-    for (let i of this.columns) {
-      for (let s of this.rows) {
+    for (const i of this.columns) {
+      for (const s of this.rows) {
         this.coordinates.push(i + s);
       }
     }
@@ -93,7 +96,7 @@ export class ChessComponent implements OnInit {
   }
 
   setCoorditantesToHighlight(id: string) {
-    for (const piece of this.pieces) {
+    for (const piece of this.chesspieces) {
       if (piece.id === id) {
         switch (piece.type) {
           case PieceType.Pion: {
@@ -109,7 +112,7 @@ export class ChessComponent implements OnInit {
 
   drop(ev) {
     ev.preventDefault();
-    let data = ev.dataTransfer.getData('text');
+    const data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
     console.log('droptarget: ' + ev.target.id);
     document.getElementById('4e').className = this.classname;
@@ -119,9 +122,9 @@ export class ChessComponent implements OnInit {
     ev.preventDefault();
   }
 
-  drag(ev) {
-    ev.dataTransfer.setData('text', ev.target.id);
-    console.log('dragtarget: ' + ev.target.id);
+  drag(ev: ChessPieceMoveEvent) {
+    ev.event.dataTransfer.setData('text', ev.event.target.id);
+    console.log('dragtarget: ' + ev.event.target.id);
     this.classname = document.getElementById('4e').className;
 
     document.getElementById('4e').className = this.classname + ' highlight';
