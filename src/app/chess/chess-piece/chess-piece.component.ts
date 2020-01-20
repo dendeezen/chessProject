@@ -11,10 +11,6 @@ import {ChessPieceMoveEvent} from '../chessPieceMoveEvent';
 })
 export class ChessPieceComponent implements OnInit {
 
-  /*faChessKing = faChessKing;
-  private chesspiece: Chesspiece = new Chesspiece('a', '1', true, PieceType.Koning);
-  private chesspiece2: Chesspiece = new Chesspiece('b', '2', false, PieceType.Koning);
-  chesspieces = [this.chesspiece, this.chesspiece2];*/
   @Input() chesspiece: Chesspiece;
   faChessKing = faChessKing;
 
