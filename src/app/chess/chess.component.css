@@ -36,7 +36,7 @@
 }
 
 .black {
-  border: solid 1px #ccc;
+  border: solid 5px #ccc;
   background: #333333;
   color: #ccc;
 }
@@ -74,3 +74,6 @@
   stroke-width: 10;
 }
 
+.highlight {
+  border: solid 10px red;
+}
