@@ -7,7 +7,8 @@
 </div>
 
 <div id="chessPieceBox">
-  <div *ngFor="let piece of pieces" id="{{piece.id}}" draggable="true" (dragstart)="drag($event)">
-  <fa-icon class="{{piece.getColor()}}" [icon]="piece.getImage()" size="2x"></fa-icon>
-  </div>
+  <app-chess-piece-list [chesspieces]="chesspieces" (onDrag)="drag($event)"></app-chess-piece-list>
 </div>
+
+
+

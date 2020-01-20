@@ -61,18 +61,7 @@
 }
 
 
-.zwart {
-  color: #644c1b;
-  stroke: #fafbfc;
-  stroke-width: 10;
-  border-bottom: 40px;
-}
 
-.wit {
-  color: #fafbfc;
-  stroke: #644c1b;
-  stroke-width: 10;
-}
 
 .highlight {
   border: solid 10px red;

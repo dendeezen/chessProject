@@ -19,6 +19,7 @@ import { ChessPieceComponent } from './chess/chess-piece/chess-piece.component';
 import { GridComponentComponent } from './chess/grid-component/grid-component.component';
 import { GridListComponentComponent } from './chess/grid-list-component/grid-list-component.component';
 import {AngularDraggableModule} from 'angular2-draggable';
+import { ChessPieceListComponent } from './chess/chess-piece-list/chess-piece-list.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {AngularDraggableModule} from 'angular2-draggable';
     ChessPieceComponent,
     GridComponentComponent,
     GridListComponentComponent,
+    ChessPieceListComponent,
   ],
   imports: [
     BrowserModule,

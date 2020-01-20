@@ -19,6 +19,13 @@
   color: #644c1b;
   stroke: #fafbfc;
   stroke-width: 10;
+  border-bottom: 40px;
+}
+
+.wit {
+  color: #fafbfc;
+  stroke: #644c1b;
+  stroke-width: 10;
 }
 .example-box:active {
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
