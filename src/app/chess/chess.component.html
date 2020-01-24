@@ -1,14 +1,17 @@
-<p>chess works!</p>
-
 <button (click)="beginGame()" *ngIf="!gameBegun">Start chess game</button>
 
+<p *ngIf="gameBegun && winner === null">Wit is aan de beurt: {{this.whitesTurn}}</p>
+
 <div id="grid" #myBounds class="grid-container" >
-    <div class="grid-item" *ngFor="let coordinate of coordinates" id="{{coordinate}}" (drop)="drop($event)" (dragover)="allowDrop($event)"></div>
+    <div class="grid-item" *ngFor="let coordinate of coordinates" id="{{coordinate}}" (drop)="drop($event)" (dragover)="allowDrop($event)">
+    </div>
 </div>
 
 <div id="chessPieceBox">
   <app-chess-piece-list [chesspieces]="chesspieces" (onDrag)="drag($event)"></app-chess-piece-list>
 </div>
+
+
 
 
 

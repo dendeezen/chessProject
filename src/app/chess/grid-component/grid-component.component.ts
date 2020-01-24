@@ -22,7 +22,6 @@ export class GridComponentComponent implements OnInit {
 
   constructor() { }
 
-
   ngOnInit() {
     this.x = this.coordinate.coordinate.charAt(1);
     this.y = this.coordinate.coordinate.charAt(0);

@@ -10,6 +10,7 @@ export class TictactoeComponent implements OnInit {
   id: string;
   winnerDetermined = false;
   draw = false;
+  vsComputer = false;
   players: Array<string> = ['X', 'O'];
   currentPlayer = this.players[Math.floor(Math.random() * Math.floor(2))];
   gameBoard = '/---------/' + this.currentPlayer;
@@ -21,7 +22,7 @@ export class TictactoeComponent implements OnInit {
   selected() {
     console.log('selected level: ' + this.selectedLevel);
     if (this.selectedLevel === 'vs computer') {
-
+      this.vsComputer = true;
     }
   }
 
@@ -44,7 +45,7 @@ export class TictactoeComponent implements OnInit {
   }
 
   cell1Clicked(): void {
-    if (!this.winnerDetermined && document.getElementById('1').innerText === '') {
+    if (!this.winnerDetermined && document.getElementById('1').innerText === '' && !this.vsComputer) {
       document.getElementById('1').innerText = this.currentPlayer;
       this.setCharAt(1);
       this.determineWinner();
@@ -53,7 +54,7 @@ export class TictactoeComponent implements OnInit {
   }
 
   cell2Clicked(): void {
-    if (!this.winnerDetermined && document.getElementById('2').innerText === '') {
+    if (!this.winnerDetermined && document.getElementById('2').innerText === '' && !this.vsComputer) {
       document.getElementById('2').innerText = this.currentPlayer;
       this.setCharAt(2);
       this.determineWinner();

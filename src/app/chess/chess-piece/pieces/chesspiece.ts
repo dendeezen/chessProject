@@ -89,7 +89,7 @@ export class Chesspiece {
 
   getLinks(c: string): string {
     if (c.charAt(1) === 'a') {
-      return '-1';
+      return 'XX0';
     }
     for (let i = 0; i < 8; i++) {
       if (c.charAt(1) === ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'][i]) {
@@ -100,7 +100,7 @@ export class Chesspiece {
 
   getRechts(c: string): string {
     if (c.charAt(1) === 'h') {
-      return '-1';
+      return 'XXi';
     }
     for (let i = 0; i < 8; i++) {
       if (c.charAt(1) === ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'][i]) {

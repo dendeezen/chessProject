@@ -5,6 +5,10 @@ import {PieceType} from './chess-piece/pieces/type';
 import {ChessPieceMoveEvent} from './chessPieceMoveEvent';
 import {Pion} from './chess-piece/pieces/pion';
 import {Koning} from './chess-piece/pieces/koning';
+import {Toren} from './chess-piece/pieces/toren';
+import {Loper} from './chess-piece/pieces/loper';
+import {Koningin} from './chess-piece/pieces/koningin';
+import {Paard} from './chess-piece/pieces/paard';
 
 /**
  * @title Basic Drag&Drop
@@ -16,24 +20,23 @@ import {Koning} from './chess-piece/pieces/koning';
   styleUrls: ['./chess.component.css']
 })
 export class ChessComponent implements OnInit {
-  // tslint:disable-next-line:max-line-length
   koningZwart = new Koning ('1d', 'koningZwart', true, PieceType.Koning);
-  koninginZwart = new Chesspiece('1e', 'koninginZwart', true, PieceType.Koningin);
-  toren1Zwart = new Chesspiece('1a', 'toren1Zwart', true, PieceType.Toren);
-  toren2Zwart = new Chesspiece('1h', 'toren2Zwart', true, PieceType.Toren);
-  loper1Zwart = new Chesspiece('1b', 'loper1Zwart', true, PieceType.Loper);
-  loper2Zwart = new Chesspiece('1g', 'loper2Zwart', true, PieceType.Loper);
-  paard1Zwart = new Chesspiece('1c', 'paard1Zwart', true, PieceType.Paard);
-  paard2Zwart = new Chesspiece('1f', 'paard2Zwart', true, PieceType.Paard);
+  koninginZwart = new Koningin('1e', 'koninginZwart', true, PieceType.Koningin);
+  toren1Zwart = new Toren('1a', 'toren1Zwart', true, PieceType.Toren);
+  toren2Zwart = new Toren('1h', 'toren2Zwart', true, PieceType.Toren);
+  loper1Zwart = new Loper('1b', 'loper1Zwart', true, PieceType.Loper);
+  loper2Zwart = new Loper('1g', 'loper2Zwart', true, PieceType.Loper);
+  paard1Zwart = new Paard('1c', 'paard1Zwart', true, PieceType.Paard);
+  paard2Zwart = new Paard('1f', 'paard2Zwart', true, PieceType.Paard);
 
   koningWit = new Koning ('8d', 'koningWit', false, PieceType.Koning);
-  koninginWit = new Chesspiece('8e', 'koninginWit', false, PieceType.Koningin);
-  toren1Wit = new Chesspiece('8a', 'toren1Wit', false, PieceType.Toren);
-  toren2Wit = new Chesspiece('8h', 'toren2Wit', false, PieceType.Toren);
-  loper1Wit = new Chesspiece('8b', 'loper1Wit', false, PieceType.Loper);
-  loper2Wit = new Chesspiece('8g', 'loper2Wit', false, PieceType.Loper);
-  paard1Wit = new Chesspiece('8c', 'paard1Wit', false, PieceType.Paard);
-  paard2Wit = new Chesspiece('8f', 'paard2Wit', false, PieceType.Paard);
+  koninginWit = new Koningin('8e', 'koninginWit', false, PieceType.Koningin);
+  toren1Wit = new Toren('8a', 'toren1Wit', false, PieceType.Toren);
+  toren2Wit = new Toren('8h', 'toren2Wit', false, PieceType.Toren);
+  loper1Wit = new Loper('8b', 'loper1Wit', false, PieceType.Loper);
+  loper2Wit = new Loper('8g', 'loper2Wit', false, PieceType.Loper);
+  paard1Wit = new Paard('8c', 'paard1Wit', false, PieceType.Paard);
+  paard2Wit = new Paard('8f', 'paard2Wit', false, PieceType.Paard);
 
   pion1Zwart = new Pion('2a', 'pion1Zwart' , true, PieceType.Pion);
   pion2Zwart = new Pion('2b', 'pion2Zwart' , true, PieceType.Pion);
@@ -60,16 +63,16 @@ export class ChessComponent implements OnInit {
   allWhiteCoordinates: string[];
   coordinatesToHighlight: string[];
   gameBegun = false;
+  winner: string;
+  whitesTurn: boolean;
   classname: string;
+  schaaktoestand = false;
   constructor() { }
   dragtarget: Chesspiece;
 
   columns = [8, 7, 6, 5, 4, 3, 2, 1];
   rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  bounds: any;
-  gridsize = 80;
   coordinates: string[] = [];
-  counter = 1;
 
 
   ngOnInit() {
@@ -82,9 +85,6 @@ export class ChessComponent implements OnInit {
       document.getElementById(piece.coordinate).appendChild(temp);
     }
     }
-    // const koningZ = document.getElementById('koningZwart');
-    // // @ts-ignore
-    // document.getElementById(this.koningZwart.coordinate).appendChild(koningZ);
 
   fillCoordinates() {
     for (const i of this.columns) {
@@ -92,7 +92,6 @@ export class ChessComponent implements OnInit {
         this.coordinates.push(i + s);
       }
     }
-    console.log(this.coordinates);
   }
 
   setCoorditantesToHighlight(id: string) {
@@ -106,13 +105,29 @@ export class ChessComponent implements OnInit {
   }
 
   drop(ev) {
-    ev.preventDefault();
-    let data = ev.dataTransfer.getData('text');
-    ev.target.appendChild(document.getElementById(data));
-    this.dragtarget.coordinate = ev.target.id;
-    console.log('droptarget: ' + ev.target.id);
-    if (this.dragtarget instanceof Pion) {
-      this.dragtarget.firstMove = false;
+    const data = ev.dataTransfer.getData('text');
+    let eventTarget = null;
+    let targetCell = null;
+    if (ev.target.tagName === 'DIV') {
+      eventTarget = ev.target.id;
+    } else if (ev.target.tagName === 'svg') {
+      eventTarget = ev.target.parentNode.parentNode.parentNode.id;
+    } else if (ev.target.tagName === 'path') {
+      eventTarget = ev.target.parentNode.parentNode.parentNode.parentNode.id;
+    }
+    targetCell = document.getElementById(eventTarget);
+    if (this.coordinatesToHighlight.includes(eventTarget)) {
+      console.log(this.dragtarget.type + ' verplaatst naar ' + eventTarget);
+      this.checkOverlap(eventTarget);
+      targetCell.appendChild(document.getElementById(data));
+      this.dragtarget.coordinate = eventTarget;
+      if (this.dragtarget instanceof Pion) {
+        this.dragtarget.firstMove = false;
+      }
+      this.checkIfSchaak();
+      this.changePlayerTurn();
+    } else {
+      console.log('Ongeldige zet');
     }
     this.dragtarget = null;
     this.resetHighlights();
@@ -124,24 +139,28 @@ export class ChessComponent implements OnInit {
 
   drag(ev: ChessPieceMoveEvent) {
     this.resetHighlights();
-    ev.event.dataTransfer.setData('text', ev.event.target.id);
     this.dragtarget = this.getElementById(ev.event.target.id);
-    this.setCoorditantesToHighlight(ev.event.target.id);
-    for (const coordinate of this.coordinatesToHighlight) {
-      if (this.coordinateExists(coordinate)) {
-        this.classname = document.getElementById(coordinate).className;
-        document.getElementById(coordinate).className = 'highlight ' + this.classname;
-      } else {
-        console.log('coordinaat ' + coordinate + ' bestaat niet.');
+    if (this.dragtarget.isBlack !== this.whitesTurn) {
+      ev.event.dataTransfer.setData('text', ev.event.target.id);
+      this.dragtarget = this.getElementById(ev.event.target.id);
+      this.setCoorditantesToHighlight(ev.event.target.id);
+      for (const coordinate of this.coordinatesToHighlight) {
+        if (this.coordinateExists(coordinate)) {
+          this.classname = document.getElementById(coordinate).className;
+          document.getElementById(coordinate).className = 'highlight ' + this.classname;
+        }
       }
-    }
+    } else {console.log('Het is nu aan de andere speler. Gelieve uw beurt af te wachten.'); }
+
   }
 
   beginGame() {
+    this.winner = null;
     this.gameBegun = true;
     this.generateCheckerBoard();
     this.placeChesspieces();
     this.getAllCoordinates();
+    this.whitesTurn = true;
   }
 
   getAllCoordinates() {
@@ -154,8 +173,6 @@ export class ChessComponent implements OnInit {
         this.allWhiteCoordinates.push(piece.coordinate);
       }
     }
-    console.log(this.allBlackCoordinates);
-    console.log(this.allWhiteCoordinates);
   }
 
   resetHighlights() {
@@ -170,16 +187,11 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  onCellClicked(coordinate: Coordinate): void {
-    console.log(coordinate.coordinate);
-  }
-
   generateCheckerBoard(): void {
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         if ((i + j) % 2 === 0) {
           document.getElementById(this.columns[j] + this.rows[i]).className = 'grid-item darktile';
-          // console.log(this.columns[y] + this.rows[i] + ' aangeroepen');
         }
       }
     }
@@ -204,4 +216,61 @@ export class ChessComponent implements OnInit {
     }
   }
 
+  changePlayerTurn() {
+    if (this.whitesTurn) {
+      this.whitesTurn = false;
+    } else {this.whitesTurn = true; }
+  }
+
+  checkOverlap(coordinate: string) {
+    this.getAllCoordinates();
+    if (this.whitesTurn) {
+      if (this.allBlackCoordinates.includes(coordinate)) {
+        this.chesspieces.forEach((item, index) => {
+          if (item.coordinate === coordinate) {
+            if (item instanceof Koning) {
+              alert('Wit wint!!');
+            }
+            document.getElementById(item.id).outerHTML = '';
+            console.log(item.type + ' verloren.');
+            this.chesspieces.splice(index, 1);
+          }
+        });
+      }
+    }
+    if (!this.whitesTurn) {
+      if (this.allWhiteCoordinates.includes(coordinate)) {
+        this.chesspieces.forEach((item, index) => {
+          if (item.coordinate === coordinate) {
+            if (item instanceof Koning) {
+              alert('Zwart wint!!');
+            }
+            document.getElementById(item.id).outerHTML = '';
+            console.log(item.type + ' verloren.');
+            this.chesspieces.splice(index, 1);
+          }
+        });
+      }
+    }
+  }
+
+  checkIfSchaak() {
+    let possibleCoordinates = [];
+    this.chesspieces.forEach((item, index) => {
+        if (this.whitesTurn !== item.isBlack) {
+          possibleCoordinates = possibleCoordinates.concat(item.getMovementOptions(this.allBlackCoordinates, this.allWhiteCoordinates));
+        }
+      });
+    if (this.whitesTurn) {
+      if (possibleCoordinates.includes(this.koningZwart.coordinate)) {
+        this.schaaktoestand = true;
+        alert('Schaak! zet je koning in veiligheid!');
+      }
+    } else {
+      if (possibleCoordinates.includes(this.koningWit.coordinate)) {
+        this.schaaktoestand = true;
+        alert('Schaak! zet je koning in veiligheid!');
+      }
+    }
+  }
 }

@@ -2,9 +2,7 @@ import {Chesspiece} from './chesspiece';
 import {PieceType} from './type';
 
 export class Pion extends Chesspiece {
-
   firstMove: boolean;
-
   constructor(coordinate: string, id: string, isBlack: boolean, type: PieceType) {
       super(coordinate, id, isBlack, type);
       this.firstMove = true;
